@@ -1,0 +1,256 @@
+Script started on Tue 15 Jan 2019 08:28:07 PM EST
+]0;gomes_ma@cobra:~/csc310/lab1[?1034h[gomes_ma@cobra lab1]$ cat tail.cc
+/*
+*Developer : Mark Gomes
+*1/10/19
+*CSC 310
+*prints out last n lines of a file
+*/
+
+#include <sstream>
+#include <fstream>
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+void HandleFlags(int &numlines, int argc, char* argv[]);
+void MoonWalkThroughFile(fstream &file, int numlines);
+void PrintLastLines(fstream &file);
+
+int main(int argc, char *argv[])
+{
+    int numlines;      //stores n lines
+    
+    HandleFlags(numlines, argc, argv);    //gets n lines from command flags
+
+    string filename = argv[2];          //read in file name
+    fstream file (filename.c_str(), ios::in | ios::app);
+
+    MoonWalkThroughFile(file, numlines);      //go backwards through file till n line from end
+
+    PrintLastLines(file);    //print last n lines of file
+}
+
+void HandleFlags(int &numlines, int argc, char* argv[])
+{
+    char* numflag = argv[1];        //read in n lines flag
+    stringstream ss;
+    ss << numflag[1];
+    ss >> numlines;
+}
+
+void MoonWalkThroughFile(fstream &file, int numlines)
+{
+    char ch = ' ';
+    file.seekg(0, ios::end);
+    for(int i = 0; i < numlines; i++)      //place read head at start of last n lines
+    {
+        file.seekg(-2, ios::cur);
+        while( ch != '\n' )     //iterate backwards to end of line
+        {
+            if( !file.good() )      //check if numlines is greater than total file lines
+            {
+                file.clear();
+                file.seekg(0, ios::beg);
+                goto end;
+            }
+            else
+            {
+                file.get(ch);                //get char at read heard
+                file.seekg(-2, ios::cur);    //go back two spaces
+            }
+        }
+        ch = ' ';
+        file.seekg(2, ios::cur);
+    }
+
+    end:;
+}
+
+void PrintLastLines(fstream &file)
+{
+    char ch;
+    file.get(ch);
+    while( file.good() )    //print last n lines
+    {
+        cout << ch;
+        file.get(ch);
+    }
+
+    file.clear();
+}
+]0;gomes_ma@cobra:~/csc310/lab1[gomes_ma@cobra lab1]$ cat wc.cc
+/*
+*Developer : Mark Gomes
+*1/15/19
+*CSC 310
+*counts lines, words, bytes of a file
+*/
+
+#include <fstream>
+#include <iostream>
+#include <string>
+#include <cstring>
+#include <stdio.h>
+
+using namespace std;
+
+void HandleFlags(bool &bf, bool &lf, bool &wf, int argc, char* argv[]);
+void CountFile(fstream &file, int &linecount, int &wordcount, int &bytecount);
+void HandleOutput(bool bf, bool lf, bool wf, int linecount, int wordcount, int bytecount, string filename);
+
+int main(int argc, char *argv[])
+{
+    //variables to store counts
+    int linecount = 0, wordcount = 0, bytecount = 0;
+    
+    //bools to store flag settings
+    bool bf = false, lf = false, wf = false;
+
+    HandleFlags(bf, lf, wf, argc, argv);    //set flag settings
+
+    string filename = argv[argc-1];          //read in file name
+    fstream file (filename.c_str(), ios::in | ios::app);
+    
+    CountFile(file, linecount, wordcount, bytecount);    //go through file and count
+       
+    HandleOutput(bf, lf, wf, linecount, wordcount, bytecount, filename);    //print counts to screen
+}
+
+void HandleFlags(bool &bf, bool &lf, bool &wf, int argc, char* argv[])
+{
+    for(int i = 1; i < argc-1; i++)     //handles flags
+    {
+        if( strcmp( argv[i], "-c" ) == 0 )
+            bf = true;
+        else if( strcmp( argv[i] , "-l" ) == 0 )
+            lf = true;
+        else if( strcmp( argv[i] , "-w" ) == 0 )
+            wf = true;
+    }
+
+    if(!bf && !lf && !wf)       //if no flags then display all counts
+        bf = true, lf = true, wf = true;
+}
+
+void CountFile(fstream &file, int &linecount, int &wordcount, int &bytecount)
+{
+    char ch;
+    char lastch = ' ';
+    file.get(ch);
+    while( file.good() )      //iterate through all lines
+    {        
+        if( ch == '\n' )        //check for next lines
+        {
+            linecount++;
+            if(lastch != ' ')
+            {
+                wordcount++;
+            }
+        }
+        else if ( ch == ' ' )       //check for spaces
+        {
+            if(lastch != ' ')
+            {
+                wordcount++;
+            }
+        }
+        
+        bytecount++;        //increment btye count for each char
+        lastch = ch;        //store last ch
+        file.get(ch);       //get next character in file
+    }
+}
+
+void HandleOutput(bool bf, bool lf, bool wf, int linecount, int wordcount, int bytecount, string filename)
+{
+    string output;            //handle output based on counts and bools
+    output = lf ? to_string(linecount) + "\t" : "";
+    output += wf ? to_string(wordcount) + "\t" : "";
+    output += bf ? to_string(bytecount) + "\t" : "";
+
+    //print out output with filename
+    cout << "\t" << output << filename << endl;
+}
+]0;gomes_ma@cobra:~/csc310/lab1[gomes_ma@cobra lab1]$ cat part2.cc
+/*
+ *Mark Gomes
+ *CSC 310 - 1/15/19
+ *Program explores use of inheritance and polymorphism
+ */
+
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+class Base      //base class
+{
+    public :
+        virtual void iam();
+};
+
+void Base::iam()
+{
+    cout << "Base" << endl;
+}
+
+class Base1 : public Base   //1st class derived from base
+{
+    public :
+        void iam();
+        void iam2();
+};
+
+void Base1::iam()
+{
+    cout << "Base1" << endl;
+}
+
+void Base1::iam2()
+{
+    Base::iam();
+}
+
+class Base2 : public Base   //2nd class derived from base
+{
+    public :
+        void iam();
+        void iam2();
+};
+
+void Base2::iam()
+{
+    cout << "Base2" << endl;
+}
+
+void Base2::iam2()
+{
+    Base::iam();
+}
+
+int main(int argc, char *argv[])
+{
+    Base1 b1;       //objects of two classes derived from base
+    Base2 b2;
+
+    b1.iam();
+    b1.iam2();
+
+    b2.iam();
+    b2.iam2();
+
+    Base *bp;
+    bp = &b1;       //pointing to 1st derived class
+    bp -> iam();
+
+    bp = &b2;       //pointing to 2nd derived class
+    bp -> iam();
+
+    return 0;
+}
+]0;gomes_ma@cobra:~/csc310/lab1[gomes_ma@cobra lab1]$ exit
+exit
+
+Script done on Tue 15 Jan 2019 08:29:11 PM EST
