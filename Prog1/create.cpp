@@ -7,37 +7,44 @@
 #include <string>
 #include <fstream>
 #include <sstream>
+#include <bits/stdc++.h>
 
 using namespace std;
 
-//typedef char String[25];
+typedef char String[25];
 
 struct BookRec
 {
-    unsigned int isbn;
-    string name;
-    string author;
+    long int isbn;
+    String name;
+    String author;
     int onhand;
     float price;
-    string type;
+    String type;
 };
 
 
 istream & operator >> (istream& is, BookRec& br)
 {
-    string isbn, onhand, price;
+    string isbn,name,author,onhand,price,type;
     if(getline(is, isbn, '|'))
     {
-        br.isbn = stoul(isbn, nullptr, 0);  //check for dashes
-        getline(is, br.name, '|');
-        getline(is, br.author, '|');
+        br.isbn = stol(isbn, nullptr);  //check for dashes
+
+        getline(is, name, '|');
+        strcpy(br.name, name.c_str());
+
+        getline(is, author, '|');
+        strcpy(br.author, author.c_str());
+
         getline(is, onhand, '|');
         br.onhand = stoi(onhand);
+
         getline(is, price, '|');
         br.price = stof(price);
-        getline(is, br.type, '\n');
 
-        //cout << isbn << " " << onhand << " " <<  price << endl;
+        getline(is, type, '\n');
+        strcpy(br.type, type.c_str());
     }
 
     return is;
@@ -52,24 +59,24 @@ int main(int argc, char *argv[])
 
     while (infile >> buffer)
     {   
+        //check buffer for exceptions and print out errors before writing to file
 
         outfile.write((char *) &buffer, sizeof(BookRec) );
     }
-
-/*
-    outfile.seekp ( 1 * sizeof(buffer) );
-    outfile.write ( (char *) &buffer, sizeof(buffer) );
+    infile.close();
     outfile.close();
 
     fstream binfile ("mark.out", ios::in | ios::binary);
     while ( binfile.read ((char *) &buffer, sizeof(buffer)) )
-        cout << buffer.isbn << "\t" << buffer.name << "\t" << buffer.author
-             << buffer.onhand << "\t" << buffer.price << "\t" << buffer.type << endl;
+    {
+        cout << setw(12) << buffer.isbn << setw(22) << buffer.name 
+             << setw(24) << buffer.author << setw(3) << buffer.onhand 
+             << setw(7) << fixed << showpoint << setprecision(2) << buffer.price 
+             << setw(9) << buffer.type << endl;
+    }
 
-    infile.close();
-    //outfile.close();
     binfile.close();
-*/    
+   
     return 0;
 }
 
