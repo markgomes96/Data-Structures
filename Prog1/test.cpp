@@ -40,8 +40,7 @@ struct TransactionRec
 //6 - Deleting record, non-existent isbn
 //7 - Change onhand, create negative count
 //8 - Change onhand, non-existent isbn
-//9 - Change price, create negative count
-//10 - Change price, non-existent isnb
+//9 - Change price, non-existent isnb
 
 void addToTransFile(fstream& tranfile, BookRec& br, TransactionType type)
 {
@@ -75,14 +74,12 @@ int main(int argc, char *argv[])
     
     infile.read ((char *) &br5, sizeof(br5));      //error 6; error 8; error 10
     infile.read ((char *) &br6, sizeof(br6));      //error 7
-    infile.read ((char *) &br7, sizeof(br7));      //error 9
 
     br1.isbn = 7777777777;
     br3.onhand = 2;
     br4.price = 3.33;
     br5.isbn = 8888888888;
     br6.onhand = -90;
-    br7.onhand = -10.00;
 
     for(int i = 1; i < argc; i++)
     {
@@ -121,10 +118,6 @@ int main(int argc, char *argv[])
                 break;
                 
             case 8 :
-                addToTransFile(tranfile, br7, ChangePrice);
-                break;
-                
-            case 9 :
                 addToTransFile(tranfile, br5, ChangePrice);
                 break;
                          

@@ -14,9 +14,22 @@ The program outputs a [new master file] and an [ERROR file].
     2. Read in/open infile and outfile to copy file, infile to transaction file, infile to error file
     3. Loop through all transaction records
         4. Based on transaction type, preform transaction on copy file
+            4a. To add a file, check if isbn exist. If not then add record to end of copy file.
+            4b. To delete a file, check if isbn exist. If it does then find file, and mark its isbn with -1 for deletion.
+            4c. To change on hand, check if isbn exist. If it does find file, read in record, modify record with 
+                    transaction record and write it back to copy file.
+            4d. To change price, repeat process [4c], but instead modify price field
     
     5. Copy updated copy file to new master file     
 
 Mark Gomes
 1/29/19
 CSC 310 - Project #1
+
+Test Program - test.cpp
+
+To Run : 
+        a.out [#] [#] ...
+
+You may enter any variation of transaction events corresponding to numbers 0-8 seperated by a space.
+Numbers 0-3 -> Successful events | Numbers 4-8 -> Error events
