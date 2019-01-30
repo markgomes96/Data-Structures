@@ -24,46 +24,11 @@ struct BookRec
     String type;
 };
 
-struct TransationRec
+struct TransactionRec
 {
     TransactionType ToDo;
     BookRec B;
 };
-
-void addRecord(fstream& infile, fstream& outfile, TransationRec& tr, BookRec& br, fstream& errorfile, int tranNum)
-{
-    if(searchFile(infile, tr.B.isbn) < 0)    //add record to end of file
-    {
-        outfile.seekp ( 0, ios::end );        //move ptr to end of file
-        loadTranToBook(tr, br);
-        outfile.write((char *) &br, sizeof(BookRec) );
-    }
-    else      //error - record alread exists
-    {
-        stringstream ss;
-        ss << "Error in transaction number " << tranNum << ": cannot add-duplicate key " << buffer.isbn;
-        errorfile.write(ss.str().c_str());
-        ss.str("");
-    }
-}
-
-void deleteRecord(fstream& infile, fstream& outfile, TransationRec& tr, BookRec& br, fstream& errorfile, int tranNum)
-{
-    if(searchFile(infile, tr.B.isbn) > 0)       //delete record
-    {   
-        outfile.seekp ( infile.tellg(), ios::beg );       //move ptr in outfile to same as infile
-        infile.read ((char *) &br, sizeof(BookRec));      //read in record to be deleted
-        br.isbn = -1;                                    //mark record for deletion
-        outfile.write(char *) &br, sizeof(BookRec) );
-    }
-    else        //error - record doesn't exist
-    {
-        stringstream ss;
-        ss << "Error in transaction number " << tranNum << ": cannot delete-no such key " << buffer.isbn;
-        errorfile.write(ss.str().c_str());
-        ss.str("");
-    }
-}
 
 int searchFile(fstream& infile, long int isbn)
 {
@@ -78,7 +43,7 @@ int searchFile(fstream& infile, long int isbn)
             break;            //returns file pointing at found isbn location
         }
     }
-    
+
     if(found)        //indicated if isbn number was found
         return 1;
     else
@@ -86,14 +51,93 @@ int searchFile(fstream& infile, long int isbn)
 }
 
 //copies TransationRec data struct to BookRec data struct
-void loadTranToBook(TransationRec &tr, BookRec &br)
+void loadTranToBook(TransactionRec &tr, BookRec &br)
 {
     br.isbn = tr.B.isbn;
-    br.name = tr.B.name;
-    br.author = tr.B.author;
+    strcpy(br.name, tr.B.name);
+    strcpy(br.author, tr.B.author);
     br.onhand = tr.B.onhand;
     br.price = tr.B.price;
-    br.type = tr.B.type;
+    strcpy(br.type, tr.B.type);
+}
+
+void addRecord(fstream& infile, fstream& outfile, TransactionRec& tr, BookRec& br, fstream& errorfile, int tranNum)
+{
+    if(searchFile(infile, tr.B.isbn) < 0)    //add record to end of file
+    {
+        cout << "fire 2" << endl;
+        outfile.seekp ( 0, ios::end );        //move ptr to end of file
+        loadTranToBook(tr, br);
+        outfile.write((char *) &br, sizeof(BookRec) );
+    }
+    else      //error - record alread exists
+    {
+        stringstream ss;
+        ss << "Error in transaction number  " << tranNum << ": cannot add---duplicate key " << br.isbn;
+        //errorfile.write(ss.str().c_str());
+        errorfile << ss.str();
+        ss.str("");
+    }
+}
+
+void deleteRecord(fstream& infile, fstream& outfile, TransactionRec& tr, BookRec& br, fstream& errorfile, int tranNum)
+{
+    if(searchFile(infile, tr.B.isbn) > 0)       //delete record
+    {   
+        outfile.seekp (infile.tellg(), ios::beg);       //move ptr in outfile to same as infile
+        infile.read ((char *) &br, sizeof(BookRec));      //read in record to be deleted
+        br.isbn = -1;                                    //mark record for deletion
+        outfile.write((char *) &br, sizeof(BookRec) );
+    }
+    else        //error - record doesn't exist
+    {
+        stringstream ss;
+        ss << "Error in transaction number  " << tranNum << ": cannot delete---no such key " << br.isbn;
+        //errorfile.write(ss.str().c_str());
+        errorfile << ss.str();
+        ss.str("");
+    }
+}
+
+void changeOnHandAmount(fstream& infile, fstream& outfile, TransactionRec& tr, BookRec& br, fstream& errorfile, int tranNum)
+{
+    if(searchFile(infile, tr.B.isbn) > 0)       //delete record
+    {
+        outfile.seekp ( infile.tellg(), ios::beg );       //move ptr in outfile to same as infile
+        infile.read((char *) &br, sizeof(BookRec));
+        br.onhand += tr.B.onhand;
+        if(br.onhand >= 0)
+            outfile.write((char *) &br, sizeof(BookRec) );      //rewrite record with record in transaction file
+    }
+    else        //error - isbn doesn't exist
+    {
+        stringstream ss;
+        ss << "Error in transaction number  " << tranNum << ": cannot change count---no such key " << br.isbn;
+        //errorfile.write(ss.str().c_str());
+        errorfile << ss.str();
+        ss.str("");
+    }
+
+}
+
+void changePriceAmount(fstream& infile, fstream& outfile, TransactionRec& tr, BookRec& br, fstream& errorfile, int tranNum)
+{
+    if(searchFile(infile, tr.B.isbn) > 0)       //delete record
+    {
+        outfile.seekp ( infile.tellg(), ios::beg );       //move ptr in outfile to same as infile
+        infile.read((char *) &br, sizeof(BookRec));
+        br.price += tr.B.price;
+        if(br.price >= 0)
+            outfile.write((char *) &br, sizeof(BookRec) );      //rewrite record with record in transaction file
+    }
+    else        //error - isbn doesn't exist
+    {
+        stringstream ss;
+        ss << "Error in transaction number  " << tranNum << ": cannot change price---no such key " << br.isbn;
+        //errorfile.write(ss.str().c_str());
+        errorfile << ss.str();
+        ss.str("");
+    }
 }
 
 int main(int argc, char *argv[])
@@ -117,55 +161,79 @@ int main(int argc, char *argv[])
     system(ss.str().c_str());      //make copy of master file
     ss.str("");
     
-    fstream infile ("copy.out", ios::in | ios::binary);
-    fstream outfile ("copy.out", ios::out | ios::binary);
+    fstream infile;
+    fstream outfile;
     fstream tranfile (transact, ios::in | ios::binary);
     fstream errorfile ("ERRORS", ios::out);
     
-    //***********************************************
     BookRec buffer;
-    TransationRec tranBuffer;
+    TransactionRec tranBuffer;
     int count = 0;
     
     //iterate and process all transactions in transaction file
     while( tranfile.read ((char *) &tranBuffer, sizeof(tranBuffer)) )
     {
+        infile.open("copy.out", ios::in | ios::binary);
+        outfile.open("copy.out", ios::out | ios::binary | ios::app);
+    
         count++;
-        if( tranBuffer.ToDo == ADD)
+        if( tranBuffer.ToDo == Add)
         {
+            cout << "fire 1" << endl;
             addRecord(infile, outfile, tranBuffer, buffer, errorfile, count);
         }
         if( tranBuffer.ToDo == Delete)
         {
+            cout << "fire 3" << endl;
             deleteRecord(infile, outfile, tranBuffer, buffer, errorfile, count);
         }
         if( tranBuffer.ToDo == ChangeOnhand)
         {
-        
+            changeOnHandAmount(infile, outfile, tranBuffer, buffer, errorfile, count);
         }
         if( tranBuffer.ToDo == ChangePrice)
         {
-        
+            changePriceAmount(infile, outfile, tranBuffer, buffer, errorfile, count);
         }
         
-        infile.seekp ( 0, ios::beg );          //return pointers to beg
-        outfile.seekp ( 0, ios::beg );
+        infile.close();
+        outfile.close();
     }
     
-    //**********************************************
+    infile.close();
+    outfile.close();
+    
+    fstream cpfile ("copy.out", ios::in | ios::binary);
     
     fstream nmfile (newmaster, ios::out | ios::binary);          //write copy of master to new master
-    while ( infile.read ((char *) &buffer, sizeof(buffer)) )
+    while ( cpfile.read ((char *) &buffer, sizeof(buffer)) )
     {
         if(buffer.isbn > 0)        //check for deleted records
             nmfile.write((char *) &buffer, sizeof(BookRec) );
+            
+        cout << setfill ('0') << setw(10) << buffer.isbn << setfill(' ');
+        cout << setw(22) << buffer.name << setw(24) << buffer.author << setw(3) << buffer.onhand 
+             << setw(7) << fixed << showpoint << setprecision(2) << buffer.price 
+             << setw(9) << buffer.type << endl;
     }
-    infile.close();
-    outfile.close();        //close open files
+    cout << endl << endl;
+    
     nmfile.close();
     errorfile.close();
     
     system("rm copy.out");                  //remove copy of master file
+    
+    fstream binfile ("update.out", ios::in | ios::binary);        //print out master file
+    while ( binfile.read ((char *) &buffer, sizeof(buffer)) )
+    {
+        cout << setfill ('0') << setw(10) << buffer.isbn << setfill(' ');
+        cout << setw(22) << buffer.name << setw(24) << buffer.author << setw(3) << buffer.onhand 
+             << setw(7) << fixed << showpoint << setprecision(2) << buffer.price 
+             << setw(9) << buffer.type << endl;
+    }
+    
+    cpfile.close();
+    binfile.close();
     
     return 0;
 }
