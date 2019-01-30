@@ -65,7 +65,7 @@ void addRecord(fstream& infile, fstream& outfile, TransactionRec& tr, BookRec& b
 {
     if(searchFile(infile, tr.B.isbn) < 0)    //add record to end of file
     {
-        cout << "fire 2" << endl;
+        //cout << "fire 2" << endl;
         outfile.seekp ( 0, ios::end );        //move ptr to end of file
         loadTranToBook(tr, br);
         outfile.write((char *) &br, sizeof(BookRec) );
@@ -179,12 +179,12 @@ int main(int argc, char *argv[])
         count++;
         if( tranBuffer.ToDo == Add)
         {
-            cout << "fire 1" << endl;
+            //cout << "fire 1" << endl;
             addRecord(infile, outfile, tranBuffer, buffer, errorfile, count);
         }
         if( tranBuffer.ToDo == Delete)
         {
-            cout << "fire 3" << endl;
+            //cout << "fire 3" << endl;
             deleteRecord(infile, outfile, tranBuffer, buffer, errorfile, count);
         }
         if( tranBuffer.ToDo == ChangeOnhand)

@@ -1,1 +1,22 @@
+1. This client program solves the prolem of managing and recording the sale of a bunch of books.
+
+2. This program takes 3 input files in the formate [program] [master file] [transaction file] [new master file].
+    The master file holds the current record of book data.
+    The transaction file holds the list of transactions to be preformed on master file.
+    The new master file holds the updated recored of book data.
+
+The program outputs a [new master file] and an [ERROR file].
+    The new master file is described above.
+    The ERROR file holds a list of all errors produced from preforming list of transactions.
+
+3. Client Program Algorithm 
+    1. Copy master file to copy file
+    2. Read in/open infile and outfile to copy file, infile to transaction file, infile to error file
+    3. Loop through all transaction records
+        4. Based on transaction type, preform transaction on copy file
+    
+    5. Copy updated copy file to new master file     
+
 Mark Gomes
+1/29/19
+CSC 310 - Project #1
