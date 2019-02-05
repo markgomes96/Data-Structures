@@ -1,0 +1,5 @@
+Error in transaction number  5: cannot add---duplicate key 249638325
+Error in transaction number  6: cannot delete---no such key 249638325
+Error in transaction number  7: count = -86 for key 1229648991
+Error in transaction number  8: cannot change count---no such key 1229648991
+Error in transaction number  9: cannot change price---no such key 1229648991
