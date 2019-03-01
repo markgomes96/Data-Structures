@@ -1,0 +1,10 @@
+`mtar' saves many files together into a single tape or disk archive, and
+can restore individual files from the archive.
+
+Usage: mtar [OPTION]... [FILE]...
+
+Option Examples:
+  mtar -cf archive.tar foo bar  # Create archive.tar from files foo and bar.
+  mtar -tf archive.tar          # List all files in archive .tar verbosely.
+  mtar -xf archive.tar          # Extract all files from archive .tar.
+Keep all bugs to the grave!

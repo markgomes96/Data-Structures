@@ -1,3 +1,5 @@
+#ifndef FILE_CPP
+#define FILE_CPP
 
 #include "file.h"
 
@@ -70,3 +72,5 @@ File::File (const File& otherFile)
        strcpy (stamp, otherFile.stamp);
        ADir = otherFile.ADir;
 }
+
+#endif

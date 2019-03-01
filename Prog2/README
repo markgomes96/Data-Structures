@@ -1,0 +1,51 @@
+*** JTAR Program Outline ***
+
+-- File Class --
+
+- Variables
+  - name  (char[]) -> file name 
+  - pmode (char[]) -> protection mode
+  - size  (char[]) -> flle size
+  - stamp (char[]) -> file time stamp
+  - ADir  (bool)   -> is directory
+  
+- Functions
+  - string getSize()    -> access file size
+  - string getName()    -> access file name
+  - string getPmode()   -> access protection mode
+  - string getStamp()   -> access file time stamp
+  - bool   isADir()     -> access is directory
+  - int    recordSize() -> access total record size [name/pmode/size/stamp/ADir]
+  - void   flagAsDir()  -> set ADir to true
+ 
+-- End of File Class --
+
+-- CF Option --
+ 
+  1. Use a 'ls -R [directory]' command to create a list of all files and thier directory path
+  
+  2. Using created list, use 'stat' command or directory test to create file object for each file
+    - name  - stat -c "%n" [file] 
+    - pmode - stat -c "%a" [file]
+    - size  - stat -c "%s" [file]
+    - stamp - stat -c "%z" [file] -> requires additional parsing : [Year]-[Mo]-[Da] [Hr]:[Mn]:[Sd] -> YrMonthDayHrMin.Sec
+    - ADir  - stat -c "%F" [file]
+    
+  3. Convert all file objects into a binary file in correct tar format with .tar extenstion
+    - (# of files)(directory)(file object)(chars)...
+  
+-- End of CF Option --
+ 
+-- XF Option --
+ 
+  1. Read in binary file. Create File object array to hold all files. Use first int in file for size.
+  
+  2. Store all File objects into the array with corresponding information.
+  
+  3. Go through file array and recreate file or directory based on ADir variable. (*check if directory/file already exists)
+    - Directory - use 'mkdir [filename]' to create directory and touch command to set time stamp
+    - File      - use 'touch [filename]' to create file and touch command to set time stamp
+      - chmod command to set pmode or protection mode
+      - ofstream << operator to write chars to file
+ 
+-- End of XF Option --
