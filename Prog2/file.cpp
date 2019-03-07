@@ -40,37 +40,36 @@ string File::getSize() const
 
 File::File ()
 {
-       strcpy (name, "\0");  strcpy (pmode, "\0");
-       strcpy (size, "\0"); strcpy (stamp, "\0");
-       ADir = false;
+    strcpy (name, "\0");  strcpy (pmode, "\0");
+    strcpy (size, "\0"); strcpy (stamp, "\0");
+    ADir = false;
 
 }
 
-File::File (const char myName[], const char myPmode[],
-            const char mySize[], const char myStamp[])
+File::File (const char myName[], const char myPmode[], const char mySize[], const char myStamp[])
 {
-       strcpy (name, myName);  strcpy (pmode, myPmode);
-       strcpy (size, mySize); strcpy (stamp, myStamp);
-       ADir = false;
+    strcpy (name, myName);  strcpy (pmode, myPmode);
+    strcpy (size, mySize); strcpy (stamp, myStamp);
+    ADir = false;
 }
 
 File & File::operator = (const File& otherFile)
 {
-       strcpy (name, otherFile.name);
-       strcpy (pmode, otherFile.pmode);
-       strcpy (size, otherFile.size);
-       strcpy (stamp, otherFile.stamp);
-       ADir = otherFile.ADir;
-       return *this;
+    strcpy (name, otherFile.name);
+    strcpy (pmode, otherFile.pmode);
+    strcpy (size, otherFile.size);
+    strcpy (stamp, otherFile.stamp);
+    ADir = otherFile.ADir;
+    return *this;
 }
        
 File::File (const File& otherFile)
 {
-       strcpy (name, otherFile.name);
-       strcpy (pmode, otherFile.pmode);
-       strcpy (size, otherFile.size);
-       strcpy (stamp, otherFile.stamp);
-       ADir = otherFile.ADir;
+    strcpy (name, otherFile.name);
+    strcpy (pmode, otherFile.pmode);
+    strcpy (size, otherFile.size);
+    strcpy (stamp, otherFile.stamp);
+    ADir = otherFile.ADir;
 }
 
 #endif
