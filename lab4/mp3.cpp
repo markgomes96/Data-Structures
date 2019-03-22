@@ -2,13 +2,14 @@
 // 03/21/19
 // CSC 310 - Dr. Digh
 // Lab 4
+
 #include <fstream>
 #include <iostream>
 #include <map>
-#include <algorithm>
 #include <vector>
 #include <sstream>
 #include <string.h>
+#include <algorithm>
 using namespace std;
 
 class Song 
@@ -22,10 +23,10 @@ class Song
 
 ostream & operator << (ostream &out, Song &l) 
 {
-    cout << "\t\t" << l.track << ".  " << l.title << " " << l.time/100 << ":";
-    if ((l.time % 100) < 10) 
+    cout << "\t\t" << l.track << ".  " << l.title << " " << l.time/60 << ":";
+    if ((l.time % 60) < 10) 
         cout << "0";
-    cout << l.time % 100;
+    cout << l.time % 60;
 }
 
 class Album 
@@ -37,14 +38,17 @@ class Album
     string genre;
     int time;       // Total time of all songs on album
     int nsongs;     // Total number of songs on album
+    int maxtrack;       // Largest track number
+
+    bool operator < (Album another) const { return name < another.name;}
 };
 
 ostream & operator << (ostream &out, Album &l) 
 {
-    cout << "\t" << l.name << ": " << l.nsongs << ", " << l.time/100 << ":";
-    if ((l.time % 100) < 10) 
+    cout << "\t" << l.name << ": " << l.nsongs << ", " << l.time/60 << ":";
+    if ((l.time % 60) < 10) 
         cout << "0";
-    cout << l.time % 100;
+    cout << l.time % 60;
 }
 
 class Artist 
@@ -53,23 +57,22 @@ class Artist
     string name;    // Artist's name
     int time;       // Total time of all songs on all albums by this artist
     int nsongs;     // Total number of songs on all albums by this artist
-    bool operator < (Artist another) const { return name < another.name;}
     vector<Album> albums;
+
+    bool operator < (Artist another) const { return name < another.name;}
 };
 
 ostream & operator << (ostream &out, Artist &l) 
 {
-    cout << l.name << ": " << l.nsongs << ", " << l.time/100 << ":";
-    if ((l.time % 100) < 10) 
+    cout << l.name << ": " << l.nsongs << ", " << l.time/60 << ":";
+    if ((l.time % 60) < 10)
         cout << "0";
-    cout << l.time % 100;
+    cout << l.time % 60;
 }
 
 int isArtistRecorded(vector<Artist> a, string b);
 int isAlbumRecorded(vector<Artist> a, int i, string b);
 int timeToInt(string a);
-//void sortArtists(&vector<Artist> a);
-//void sortAlbums(&vector<Album> a);
 
 int main(int argc, char** argv)
 {
@@ -89,13 +92,19 @@ int main(int argc, char** argv)
     vector<Artist> artists;
 
     string line, title, time, artist, album, genre, track;
+
     int artInd, albInd;
     stringstream ss;
     while(getline(infile, line))
     {
         ss.str(line);           // load line from file into string stream
         ss >> title >> time >> artist >> album >> genre >> track;
-        
+     
+        replace( title.begin(), title.end(), '_', ' ');     // fix formating
+        replace( artist.begin(), artist.end(), '_', ' ');
+        replace( album.begin(), album.end(), '_', ' ');
+        replace( genre.begin(), genre.end(), '_', ' ');
+   
         //** handle artists **
         artInd = isArtistRecorded(artists, artist);
 
@@ -105,9 +114,31 @@ int main(int argc, char** argv)
             tmp_art.name = artist;
             tmp_art.nsongs = 0;
             tmp_art.time = 0;
-            artists.push_back(tmp_art);
 
-            artInd = artists.size() - 1;    // update artist index
+            int count = 0;
+            bool placed = false;
+            if(artists.size() == 0)
+            {
+                artists.push_back(tmp_art);
+            }
+            else    // insert artist in sorted spot
+            {
+                for(auto it = artists.begin(); it != artists.end(); ++it)
+                {
+                    if( tmp_art < *(it) )
+                    {
+                        it = artists.insert(it, tmp_art);
+                        placed = true;
+                        break;
+                    }
+                    count++;
+                }
+                if(!placed)     // handles elements sorted to end
+                {
+                    artists.insert(artists.end(), tmp_art);
+                }
+            }
+            artInd = count;
         }
         //**
 
@@ -122,23 +153,50 @@ int main(int argc, char** argv)
             tmp_alb.nsongs = 0;
             tmp_alb.time = 0;
 
-            albInd = artists[artInd].albums.size() - 1;  // update album index
+            int count = 0;
+            bool placed = false;
+            if(artists[artInd].albums.size() == 0)
+            {
+                artists[artInd].albums.push_back(tmp_alb);
+            }
+            else        // insert album in sorted spot
+            {
+                for(auto it = artists[artInd].albums.begin(); it != artists[artInd].albums.end(); ++it)
+                {
+                    if( tmp_alb < *(it) )
+                    {
+                        it = artists[artInd].albums.insert(it, tmp_alb);
+                        placed = false;
+                        break;
+                    }
+                    count++;
+                }
+                if(!placed)     // handles elements sorted to end
+                {
+                    artists[artInd].albums.insert(artists[artInd].albums.end(), tmp_alb);
+                }
+            }
+            albInd = count;
         }
         //**
 
         //** handle songs **
+        int track_int = stoi(track);
+        int time_val = timeToInt(time);
         Song tmp_song;                  // song info
         tmp_song.title = title;
-        tmp_song.time = timeToInt(time);
-        tmp_song.track = stoi(track);
-        
-        artists[artInd].albums[albInd].songs[stoi(track)] = tmp_song;          // link song -> album
+        tmp_song.time = time_val;
+        tmp_song.track = track_int;
+        if(artists[artInd].albums[albInd].maxtrack < track_int)
+            artists[artInd].albums[albInd].maxtrack = track_int;
+
+        artists[artInd].albums[albInd].songs[track_int] = tmp_song;          // link song -> album
         //**
 
         //** update artists/albums **
-        artists[artInd].albums[albInd].time += artists[artInd].albums[albInd].time;
+        artists[artInd].albums[albInd].time += time_val;
         artists[artInd].albums[albInd].nsongs++;
-        artists[artInd].time += artists[artInd].albums[albInd].time;
+        artists[artInd].time += time_val;
         artists[artInd].nsongs++;
         //**
 
@@ -155,9 +213,11 @@ int main(int argc, char** argv)
         {
             cout << artists[i].albums[j] << endl;
 
-            for(int k = 0; k < artists[i].albums[j].nsongs; k++)    // print songs
+            for(int k = 0; k <= artists[i].albums[j].maxtrack; k++)    // print songs
             {
-                cout << artists[i].albums[j].songs[k] << endl;
+                // determine if track is recorded
+                if(artists[i].albums[j].songs.find(k) != artists[i].albums[j].songs.end())
+                    cout << artists[i].albums[j].songs[k] << endl;
             }
         }
     }
@@ -190,18 +250,5 @@ int timeToInt(string a)
     int pos = a.find(":");
     int min = stoi( a.substr(0,pos) );
     int sec = stoi( a.substr(pos+1) );
-    cout << (min*60)+sec << endl;
     return (min*60)+sec;
 }
-
-/*
-void sortArtists(&vector<Artist> a)
-{
-
-}
-
-void sortAlbums(&vector<Album> a)
-{
-
-}
-*/
