@@ -1,0 +1,23 @@
+Mark Gomes
+Project #3
+B-Tree Analysis
+
+The goal of this assignment is to implement a B-tree of type Album.
+One program creates the B-tree, and the other program handles insertions and search requests from transaction file.
+
+The B-tree has an order of 5.
+The B-tree is stored in the form of a binary index file, holding a series of type BTnode.
+The first node stored has adress of root node in child[0], which is always in RAM.
+
+*BTnode
+BTnode should keep track of root node, root node address on disk, B-tree index file name,
+file pointer to index file, height of tree
+
+*createBT.cpp
+Takes sequential file name and B-tree file
+Reads all records and inserts them into the tree
+Print out preorder traveral of keys in tree by height
+
+*updateBT.cpp
+Take B-tree file and transaction file(similar to proj 2)
+Print out how many times it did a write and read
