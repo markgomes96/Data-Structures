@@ -1,0 +1,16 @@
+Minimax Gaming Trees
+
+ -tree used in AI to find the optimal move in a 2 player game
+   [] max value of children
+   O  min value of children
+
+ -this alternates on each level of tree. To evaluate, you're doing a DFS
+  and looking at the cost of full moves in advance (you & the opponent)
+
+ -Alpha Beta Pruning
+	- Technique used to save time & eliminate unnecessary right
+	  branches and their descendants
+
+	note: you may prune all nodes to the right of any min node 
+	      that has a value <= any of its max node ancestors 
+	      and vice versa

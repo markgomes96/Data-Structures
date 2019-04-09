@@ -1,0 +1,310 @@
+Total Synonyms = 211
+d(0) = 76 0.25
+d(1) = 104 0.35
+d(2) = 59 0.20
+d(3) = 44 0.15
+d(4) = 10 0.03
+d(5) = 2 0.01
+d(6) = 4 0.01
+d(7) = 1 0.00
+d(8) = 0 0.00
+i = 0 size = 1 Bowdon Jct. /// /// 
+i = 1 size = 2 Glenwood Lumber City /// 
+i = 2 size = 0 /// /// /// 
+i = 3 size = 4 Hahira Helena Mableton 
+i = 4 size = 6 Camilla Midville Nicholls 
+i = 5 size = 3 Douglas Lincolnton Palmetto 
+i = 6 size = 7 Alpharetta Cleveland Cochran 
+i = 7 size = 2 Hazlehurst Kingston Lindale 
+i = 8 size = 1 Hoschton Madison Pendley Hills 
+i = 9 size = 0 Porterdale Reynolds Riverdale 
+i = 10 size = 6 Allenhurst Doraville Fairburn 
+i = 11 size = 3 Forest Park Lilburn Louisville 
+i = 12 size = 1 Calhoun Sargent Soperton 
+i = 13 size = 1 Jonesboro Washington Waverly Hall 
+i = 14 size = 1 Leslie Waynesboro /// 
+i = 15 size = 2 Dacula Kingsland /// 
+i = 16 size = 1 Sardis /// /// 
+i = 17 size = 2 Colquitt Hoboken /// 
+i = 18 size = 4 Grantville Harlem Sylvania 
+i = 19 size = 4 Covington Dasher Elberta 
+i = 20 size = 2 Acworth Greensboro Pearson 
+i = 21 size = 1 Ashburn Thomson /// 
+i = 22 size = 3 Arlington Dunaire N. West Point 
+i = 23 size = 1 Statham /// /// 
+i = 24 size = 2 Chatsworth Smyrna /// 
+i = 25 size = 3 Bowdon Gordon N. Druid Hills 
+i = 26 size = 0 /// /// /// 
+i = 27 size = 3 Dalton Jasper Sparta 
+i = 28 size = 3 Lumpkin Rossville Thomaston 
+i = 29 size = 1 Trenton /// /// 
+i = 30 size = 2 Baxley Cumming /// 
+i = 31 size = 2 Newton Royston /// 
+i = 32 size = 1 Plains /// /// 
+i = 33 size = 1 Claxton /// /// 
+i = 34 size = 2 Canon Clayton /// 
+i = 35 size = 0 /// /// /// 
+i = 36 size = 0 /// /// /// 
+i = 37 size = 2 Clarkston Tyrone /// 
+i = 38 size = 1 Comer /// /// 
+i = 39 size = 0 /// /// /// 
+i = 40 size = 1 Conyers /// /// 
+i = 41 size = 0 /// /// /// 
+i = 42 size = 1 Tucker /// /// 
+i = 43 size = 0 /// /// /// 
+i = 44 size = 2 Adel Conley /// 
+i = 45 size = 1 Sparks /// /// 
+i = 46 size = 2 Villa Rica White /// 
+i = 47 size = 0 /// /// /// 
+i = 48 size = 1 Morrow /// /// 
+i = 49 size = 0 /// /// /// 
+i = 50 size = 1 Lula /// /// 
+i = 51 size = 1 Trion /// /// 
+i = 52 size = 1 Milledgeville /// /// 
+i = 53 size = 0 /// /// /// 
+i = 54 size = 1 Evans /// /// 
+i = 55 size = 1 Alto /// /// 
+i = 56 size = 1 Red Oak /// /// 
+i = 57 size = 3 Lyons Mt. Berry Richmond Hill 
+i = 58 size = 1 Byron /// /// 
+i = 59 size = 2 Ray City Rex /// 
+i = 60 size = 2 Bloomingdale Lawrenceville /// 
+i = 61 size = 0 /// /// /// 
+i = 62 size = 0 /// /// /// 
+i = 63 size = 1 Ty Ty /// /// 
+i = 64 size = 1 Blue Ridge /// /// 
+i = 65 size = 0 /// /// /// 
+i = 66 size = 0 /// /// /// 
+i = 67 size = 1 Mt. Zion /// /// 
+i = 68 size = 1 Mt. Vernon /// /// 
+i = 69 size = 1 Oak Gr. /// /// 
+i = 70 size = 0 /// /// /// 
+i = 71 size = 0 /// /// /// 
+i = 72 size = 0 /// /// /// 
+i = 73 size = 1 Sandersville /// /// 
+i = 74 size = 0 /// /// /// 
+i = 75 size = 1 Lake City /// /// 
+i = 76 size = 1 Walthourville /// /// 
+i = 77 size = 1 Five Forks /// /// 
+i = 78 size = 1 Stockbridge /// /// 
+i = 79 size = 1 Hephzbah /// /// 
+i = 80 size = 0 /// /// /// 
+i = 81 size = 1 Valdosta /// /// 
+i = 82 size = 1 Crawfordville /// /// 
+i = 83 size = 0 /// /// /// 
+i = 84 size = 0 /// /// /// 
+i = 85 size = 0 /// /// /// 
+i = 86 size = 1 Pine Mtn. Valley /// /// 
+i = 87 size = 1 Vista-Grove /// /// 
+i = 88 size = 0 /// /// /// 
+i = 89 size = 3 Blackwells Cartersville Woodbine 
+i = 90 size = 1 Springfield /// /// 
+i = 91 size = 1 Ringgold /// /// 
+i = 92 size = 1 Gainesville /// /// 
+i = 93 size = 0 /// /// /// 
+i = 94 size = 2 LaGrange Manchester /// 
+i = 95 size = 1 Euharlee /// /// 
+i = 96 size = 3 Baldwin Cataula Danville 
+i = 97 size = 1 Brookhaven /// /// 
+i = 98 size = 2 Blairsville Thomasville /// 
+i = 99 size = 1 Rehoboth /// /// 
+i = 100 size = 3 Hamilton Hinesville LaFayette 
+i = 101 size = 2 Demorest Vidalia /// 
+i = 102 size = 2 Hiawassee Pineview /// 
+i = 103 size = 1 Marietta Campground /// /// 
+i = 104 size = 1 Eastman /// /// 
+i = 105 size = 1 Winterville /// /// 
+i = 106 size = 3 Eatonton Moultrie Twin City 
+i = 107 size = 3 Commerce Ellaville Vinings 
+i = 108 size = 2 Lizella Norcross /// 
+i = 109 size = 3 Americus Decatur Greenville 
+i = 110 size = 2 Ludowici Peachtree City /// 
+i = 111 size = 1 Toccoa /// /// 
+i = 112 size = 3 Glennville LaVista Monticello 
+i = 113 size = 0 /// /// /// 
+i = 114 size = 3 Franklin Maysville Murraysville 
+i = 115 size = 3 Griffin Unionville Woodstock 
+i = 116 size = 2 Bonaire Vienna /// 
+i = 117 size = 2 Blakely Martinez /// 
+i = 118 size = 2 Pelham Rincon /// 
+i = 119 size = 3 Adrian Dearing Shannon 
+i = 120 size = 1 Hagan /// /// 
+i = 121 size = 3 Brooklet Oakwood Warrenton 
+i = 122 size = 1 Roberta /// /// 
+i = 123 size = 3 Berlin Ideal Zebulon 
+i = 124 size = 1 Dallas /// /// 
+i = 125 size = 1 Newnan /// /// 
+i = 126 size = 0 /// /// /// 
+i = 127 size = 3 Canton Patterson Uvalda 
+i = 128 size = 0 /// /// /// 
+i = 129 size = 2 Edison Gresham Park /// 
+i = 130 size = 4 Albany Meigs Nelson 
+i = 131 size = 2 Aragon Brunswick Wadley 
+i = 132 size = 3 Ailey Buford Roswell 
+i = 133 size = 1 Poulan /// /// 
+i = 134 size = 2 Bowman Tate /// 
+i = 135 size = 2 Metter Tifton /// 
+i = 136 size = 2 Athens Forsyth /// 
+i = 137 size = 0 /// /// /// 
+i = 138 size = 3 Cedar Gr. Isle of Hope Lenox 
+i = 139 size = 2 Broxton Portal /// 
+i = 140 size = 1 Rhine /// /// 
+i = 141 size = 2 Leary Perry /// 
+i = 142 size = 0 /// /// /// 
+i = 143 size = 2 Alamo E. Dublin /// 
+i = 144 size = 1 Sylvester /// /// 
+i = 145 size = 0 /// /// /// 
+i = 146 size = 2 Eden Young Harris /// 
+i = 147 size = 2 Guyton S. Decatur /// 
+i = 148 size = 1 Rome /// /// 
+i = 149 size = 0 /// /// /// 
+i = 150 size = 1 Wrens /// /// 
+i = 151 size = 1 Stone Mtn. /// /// 
+i = 152 size = 0 /// /// /// 
+i = 153 size = 0 /// /// /// 
+i = 154 size = 0 /// /// /// 
+i = 155 size = 0 /// /// /// 
+i = 156 size = 1 Grovetown /// /// 
+i = 157 size = 1 Chickamauga /// /// 
+i = 158 size = 0 /// /// /// 
+i = 159 size = 0 /// /// /// 
+i = 160 size = 1 Lyerly /// /// 
+i = 161 size = 0 /// /// /// 
+i = 162 size = 1 Bainbridge /// /// 
+i = 163 size = 0 /// /// /// 
+i = 164 size = 0 /// /// /// 
+i = 165 size = 1 Locust Gr. /// /// 
+i = 166 size = 0 /// /// /// 
+i = 167 size = 3 Holly Sprs. Lakeland Panthersville 
+i = 168 size = 0 /// /// /// 
+i = 169 size = 0 /// /// /// 
+i = 170 size = 1 Social Circle /// /// 
+i = 171 size = 1 Mtn. City /// /// 
+i = 172 size = 1 Garden Lakes /// /// 
+i = 173 size = 0 /// /// /// 
+i = 174 size = 0 /// /// /// 
+i = 175 size = 0 /// /// /// 
+i = 176 size = 0 /// /// /// 
+i = 177 size = 1 Blackshear /// /// 
+i = 178 size = 1 East Marietta /// /// 
+i = 179 size = 0 /// /// /// 
+i = 180 size = 1 Woodland /// /// 
+i = 181 size = 1 Hardwick /// /// 
+i = 182 size = 0 /// /// /// 
+i = 183 size = 1 Pembroke /// /// 
+i = 184 size = 1 Ochlocknee /// /// 
+i = 185 size = 1 Clarkesville /// /// 
+i = 186 size = 1 Ball Ground /// /// 
+i = 187 size = 3 Phillipsburg St. Marys Unadilla 
+i = 188 size = 0 /// /// /// 
+i = 189 size = 0 /// /// /// 
+i = 190 size = 2 Oglethorpe Union Pt. /// 
+i = 191 size = 0 /// /// /// 
+i = 192 size = 4 Barnesville Coolidge Fitzgerald 
+i = 193 size = 1 Milstead Tennille /// 
+i = 194 size = 2 Hartwell Waycross /// 
+i = 195 size = 2 Belvedere Screven /// 
+i = 196 size = 1 Port Wentworth /// /// 
+i = 197 size = 0 /// /// /// 
+i = 198 size = 0 /// /// /// 
+i = 199 size = 1 Waleska /// /// 
+i = 200 size = 2 Hapeville Remerton /// 
+i = 201 size = 2 Abbeville Centerville /// 
+i = 202 size = 2 Dock Jct. Loganville /// 
+i = 203 size = 3 Nashville Rockmart Shellman 
+i = 204 size = 3 Ellijay Georgetown Tunnel Hill 
+i = 205 size = 0 /// /// /// 
+i = 206 size = 3 Baconton Ft. Oglethorpe Homerville 
+i = 207 size = 3 Bronwood Elberton Lavonia 
+i = 208 size = 2 Leesburg Ocilla /// 
+i = 209 size = 3 Jackson Suwanee Warwick 
+i = 210 size = 3 Cuthbert Experiment Summerville 
+i = 211 size = 2 Echota Talbotton /// 
+i = 212 size = 4 Carrollton Scottdale Snellville 
+i = 213 size = 6 Buchanan Columbus Cordele 
+i = 214 size = 2 Enigma Hampton McDonough 
+i = 215 size = 1 Lincoln Park Norman Park Senoia 
+i = 216 size = 3 Crawford Darien Folkston 
+i = 217 size = 5 Colbert Irwinton Jefferson 
+i = 218 size = 2 Alapaha Kennesaw Statenville 
+i = 219 size = 2 Skyland Smithville Temple 
+i = 220 size = 0 Tignall /// /// 
+i = 221 size = 3 Fairmount Toomsboro Woodbury 
+i = 222 size = 3 Cedartown McRae Whitesburg 
+i = 223 size = 3 Atlanta Collins Winder 
+i = 224 size = 1 Nahunta /// /// 
+i = 225 size = 1 College Park /// /// 
+i = 226 size = 3 Byromville Dawson Fargo 
+i = 227 size = 1 Millen /// /// 
+i = 228 size = 6 Bogart Emerson Hiram 
+i = 229 size = 0 Lookout Mtn. Milan Swainsboro 
+i = 230 size = 1 Monroe /// /// 
+i = 231 size = 0 /// /// /// 
+i = 232 size = 0 /// /// /// 
+i = 233 size = 1 Tybee Island /// /// 
+i = 234 size = 2 Gibson Macon /// 
+i = 235 size = 4 Austell Dexter Menlo 
+i = 236 size = 3 Flowery Branch Oxford Statesboro 
+i = 237 size = 3 Bremen Cairo Pooler 
+i = 238 size = 2 Homer Omega Stillmore 
+i = 239 size = 3 Doerun Dublin Sugar Valley 
+i = 240 size = 1 Dunwoody /// /// 
+i = 241 size = 3 Alma Boston Highland Mills 
+i = 242 size = 3 Cusseta Duluth Ft. Gaines 
+i = 243 size = 2 Butler Morven /// 
+i = 244 size = 5 Augusta Jesup Pavo 
+i = 245 size = 2 Avondale Estates Sandy Sprs. Sea Island 
+i = 246 size = 1 Ft. Valley Waco /// 
+i = 247 size = 3 Montezuma N. Decatur Rocky Face 
+i = 248 size = 2 Auburn Lithia Sprs. /// 
+i = 249 size = 1 Midway /// /// 
+i = 250 size = 0 /// /// /// 
+i = 251 size = 1 New Holland /// /// 
+i = 252 size = 1 Franklin Sprs. /// /// 
+i = 253 size = 1 Druid Hills /// /// 
+i = 254 size = 0 /// /// /// 
+i = 255 size = 1 Marshallville /// /// 
+i = 256 size = 0 /// /// /// 
+i = 257 size = 1 Embry Hills /// /// 
+i = 258 size = 2 Jeffersonville Sugar Hill /// 
+i = 259 size = 0 /// /// /// 
+i = 260 size = 0 /// /// /// 
+i = 261 size = 0 /// /// /// 
+i = 262 size = 0 /// /// /// 
+i = 263 size = 1 Willacoochee /// /// 
+i = 264 size = 0 /// /// /// 
+i = 265 size = 0 /// /// /// 
+i = 266 size = 1 E. Newnan /// /// 
+i = 267 size = 1 Powder Sprs. /// /// 
+i = 268 size = 1 Warner Robins /// /// 
+i = 269 size = 1 Buena Vista /// /// 
+i = 270 size = 0 /// /// /// 
+i = 271 size = 2 Donalsonville Gray /// 
+i = 272 size = 0 /// /// /// 
+i = 273 size = 1 Douglasville /// /// 
+i = 274 size = 0 /// /// /// 
+i = 275 size = 1 Mtn. View /// /// 
+i = 276 size = 3 Fayetteville Hawkinsville Watkinsville 
+i = 277 size = 1 Deerwood Park /// /// 
+i = 278 size = 4 Mt. Airy Richland Thunderbolt 
+i = 279 size = 1 Garden City Union City /// 
+i = 280 size = 3 Bibb City Dahlonega Savannah 
+i = 281 size = 2 Homeland McCaysville /// 
+i = 282 size = 0 /// /// /// 
+i = 283 size = 2 E. Point W. Point /// 
+i = 284 size = 0 /// /// /// 
+i = 285 size = 0 /// /// /// 
+i = 286 size = 0 /// /// /// 
+i = 287 size = 2 Marietta Pine Mtn. /// 
+i = 288 size = 2 Chicopee Lithonia /// 
+i = 289 size = 2 Cave Spr. Toco Hills /// 
+i = 290 size = 2 Adairsville Haddock /// 
+i = 291 size = 1 Fair Oaks /// /// 
+i = 292 size = 4 Blacksville Carnesville Clarkdale 
+i = 293 size = 1 Hogansville Tallapoosa /// 
+i = 294 size = 2 Chamblee Deenwood /// 
+i = 295 size = 3 Reidsville St. Simons Island Wrightsville 
+i = 296 size = 1 Rochelle /// /// 
+i = 297 size = 1 Luthersville /// /// 
+i = 298 size = 4 Constitution Cornelia Rutledge 
+i = 299 size = 2 Oakdale Twin Lakes Whigham 
