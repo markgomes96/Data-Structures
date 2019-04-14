@@ -21,6 +21,8 @@ class Album
        friend istream & operator >> (istream & stream, Album & C);
        friend ostream & operator << (ostream & stream, Album & C);
        string getUPC ();
+       string getArtist();
+       string getTitle();
        int recordSize();
 
    private :

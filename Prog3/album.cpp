@@ -4,10 +4,10 @@
 #include <cstring>
 #include <string>
 #include <fstream>
-using namespace std;
 
-const int UpTo = 50;
-typedef char String[UpTo];
+#include "album.h"
+
+using namespace std;
 
 // private vars - String UPC, Artist, Title
 
@@ -16,39 +16,43 @@ Album::Album ()
 
 Album::Album (const Album& otherAlbum)
 {
-    UPC = otherAlbum.getUPC();
-    Artist = otherAlbum.getArtist();
-    Title = otherAlbum.getTitle();
+    strcpy( UPC,    otherAlbum.UPC);
+    strcpy( Artist, otherAlbum.Artist);
+    strcpy( Title,  otherAlbum.Title);
 }
 
 Album::Album (String upc, String artist, String title)
 {
-    UPC = upc;
-    Artist = artist;
-    Title = title;
+    strcpy( UPC,    upc);
+    strcpy( Artist, artist);
+    strcpy( Title,  title);
 }
 
-Album & operator = (const Album& otherAlbum)
+Album & Album::operator = (const Album& otherAlbum)
 {
-    UPC = otherAlbum.getUPC();
-    Artist = otherAlbum.getArtist();
-    Title = otherAlbum.getTitle();
+    strcpy( UPC,    otherAlbum.UPC);
+    strcpy( Artist, otherAlbum.Artist);
+    strcpy( Title,  otherAlbum.Title);
 }
 
-friend bool operator < (const Album& a, const Album& b)
+bool operator < (const Album& a, const Album& b)
 {
-    return a.UPC < b.UPC;
+    int cmp = strcmp(a.UPC, b.UPC);
+    if(cmp < 0)
+        return true;
+    else
+        return false;
 }
 
-friend istream & operator >> (istream & stream, Album & C)
+istream & operator >> (istream & stream, Album & C)
 {
     stream >> C.UPC >> C.Artist >> C.Title;
-    return is;
+    return stream;
 }
 
-friend ostream & operator << (ostream & stream, Album & C)
+ostream & operator << (ostream & stream, Album & C)
 {
-    stream << "UPC : " << C.UPC << "\nArtist : " << c.Artist <<
+    stream << "UPC : " << C.UPC << "\nArtist : " << C.Artist <<
             "\nTitle : " << C.Title;
     return stream;
 }
