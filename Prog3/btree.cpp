@@ -7,6 +7,7 @@
 #include <cstring>
 #include <string>
 #include <cstdlib>
+#include <fstream>
 
 #include "btree.h"
 
@@ -28,12 +29,18 @@ void BTree::insert (keyType key)
     BTNode tmp;
     tmp = getNode(index);
 
-    treeFile.seekg(index, ios::cur);     // put in get node function
-    treeFile.read((BTNode *) &tmp, sizeof(BTNode));
-
     if(isLeaf(tmp))
     {
         // insert the node
+        cout << "Now inserting " << key;
+        tmp.contents[tmp.currSize] = key;
+        tmp.currSize++;
+
+        // sort node
+        tmp = sortNode(tmp);
+
+        treeFile.seekg(index, ios::beg);
+        treeFile.write((char *) &tmp, sizeof(BTNode));
     }
     else
     {
@@ -45,26 +52,26 @@ void BTree::insert (keyType key)
 void BTree::reset (char *filename)
 {
     // clear out btree file, add root node and store info
-    strcpy(treeFileName, *filename);
-    treeFile = fstream(*filename | ios::in | ios::out | ios::binary);
+    strcpy(treeFileName, filename);
+    treeFile = fstream(filename, ios::in | ios::out | ios::binary);
     treeFile.clear();
 
     // create root node and assign root address
     rootAddr = treeFile.tellp();
-    root.curSize = -1;
+    root.currSize = -1;
     root.child[0] = rootAddr;
 
     // insert root node
-    treeFile.write((BTNode *) &root, sizeof(BTNode));
+    treeFile.write((char *) &root, sizeof(BTNode));
     rootAddr = treeFile.tellp();
     root.child[0] = rootAddr;
 
     // insert 1st node
     BTNode tmp;
-    tmp.curSize = 0;
+    tmp.currSize = 0;
     for(int i = 0; i < ORDER; i++)
         tmp.child[i] = -1;
-    treeFile.write((BTNode *) &tmp, sizeof(BTNode));
+    treeFile.write((char *) &tmp, sizeof(BTNode));
 
     // record read and write file positions?
 }
@@ -130,6 +137,37 @@ int BTree::countLeaves ()
     return 0;
 }
 
+BTNode BTree::sortNode(BTNode in)
+{
+    BTNode out;
+    out.currSize = in.currSize;
+    for(int i = 0; i < ORDER; i++)
+        out.child[i] = -1;
+ 
+    char test[] = "-1";
+    char* pt = test;
+    int mi = 0;
+    for(int i = 0; i < in.currSize; i++)
+    {
+        for(int j = 0; j < in.currSize; j++)
+        {
+            if(strcmp(in.contents[j].getUPC(), pt) != 0)   // find min value
+            {
+                if(in.contents[j] < in.contents[mi] || strcmp(in.contents[mi].getUPC(), "-1") == 0)
+                {
+                    mi = j;
+                }
+            }
+        }
+
+        out.contents[i] = in.contents[mi];
+        //*** This need to be fixed ***
+        keyType tmp = Album(pt, pt, pt);
+        in.contents[mi] = tmp;
+        mi = 0;
+    }
+}
+
 int BTree::findAddr (keyType key, BTNode t, int tAddr)
 {
     return 0;
@@ -148,14 +186,19 @@ void BTree::insert (keyType key, int recAddr, int oneAddr, int twoAddr)
 BTNode BTree::getNode (int recAddr)
 {
     BTNode tmp;
-    treeFile.seekg(recAddr, ios::cur);     // put in get node function
-    treeFile.read((BTNode *) &tmp, sizeof(BTNode));
+    treeFile.seekg(recAddr, ios::beg);     // put in get node function
+    treeFile.read((char *) &tmp, sizeof(BTNode));
     return tmp;
 }
 
 void BTree::printNode(int recAddr)
 {
-    //
+    BTNode tmp = getNode(recAddr);
+    cout << "    *** node of size " << tmp.currSize << " ***" << endl;
+    for(int i = 0; i < tmp.currSize; i++)
+    {
+        cout << tmp.contents[i];
+    }
 }
 
 void BTree::placeNode (keyType k,int recAddr,int oneAddr,int twoAddr)

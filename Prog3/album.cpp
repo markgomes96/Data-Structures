@@ -52,8 +52,7 @@ istream & operator >> (istream & stream, Album & C)
 
 ostream & operator << (ostream & stream, Album & C)
 {
-    stream << "UPC : " << C.UPC << "\nArtist : " << C.Artist <<
-            "\nTitle : " << C.Title;
+    stream << C.UPC << "|" << C.Artist << "|" << C.Title << "|" << endl;
     return stream;
 }
 

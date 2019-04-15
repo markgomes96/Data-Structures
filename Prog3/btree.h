@@ -61,6 +61,7 @@ class BTree
 	int read;
 	int write;
 
+    BTNode sortNode(BTNode in);
 	int findAddr (keyType key, BTNode t, int tAddr);
 	int findpAddr(keyType key, BTNode t, int tAddr);
 	void insert (keyType key, int recAddr, int oneAddr, int twoAddr);

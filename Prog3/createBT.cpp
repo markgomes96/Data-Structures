@@ -15,23 +15,6 @@
 
 using namespace std;
 
-/*
-class Album;
-const int ORDER = 5;
-typedef Album keyType;
-typedef int IndexArray[ORDER];
-typedef keyType ValueArray[ORDER-1];
-
-struct BTNode
-{
-    int currSize;
-    ValueArray contents;
-    IndexArray child;
-};
-*/
-
-class Album;
-typedef Album keyType;
 BTree bt;
 
 int main(int argc, char *argv[])
@@ -60,9 +43,13 @@ int main(int argc, char *argv[])
         exit(0);
     }
  
+    char *bfname_p = &bfname[0];
+    bt.reset(bfname_p);
+
     // read in data from sequential file
     //BTNode buffer;
     string upc, artist, title;
+    char *upc_p, *artist_p, *title_p;
     while(!seqfile.eof())
     {
         getline(seqfile, upc, '\n');
@@ -74,8 +61,13 @@ int main(int argc, char *argv[])
         //cout << upc << " : " << artist << " : " << title << endl;
 
         // call btree object to insert key
-        bt.insert(keyType(upc, artist, title));
+        upc_p = &upc[0];
+        artist_p = &artist[0];
+        title_p = &title[0];
+        bt.insert(keyType(upc_p, artist_p, title_p));
     }
+
+    bt.printTree();
 }
 
 #endif
