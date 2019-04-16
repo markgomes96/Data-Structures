@@ -23,29 +23,55 @@ void BTree::writeHeader (char *filename)
 
 void BTree::insert (keyType key)
 {
+
+    //cout << "water 0" << endl;
+
     // start at 1st node
     // if 1st node is leaf then check current size
-    int index = root.child[0];
+    int pindex = rootAddr;      // parent node address
+    int index = root.child[0];  // current node address
     BTNode tmp;
+
+loop1:
     tmp = getNode(index);
 
-    if(isLeaf(tmp))
+    //cout << "water 1" << endl;
+
+    if(isLeaf(tmp))   // check for leaf
     {
-        // insert the node
+
+        //cout << "water 2" << endl;
+
         cout << "Now inserting " << key;
-        tmp.contents[tmp.currSize] = key;
-        tmp.currSize++;
+        if(tmp.currSize < ORDER-1)    // check for space in node
+        {
+            // insert key into node
+            tmp.contents[tmp.currSize] = key;
+            tmp.currSize++;
 
-        // sort node
-        tmp = sortNode(tmp);
+            // sort node
+            tmp = sortNode(tmp);
 
-        treeFile.seekg(index, ios::beg);
-        treeFile.write((char *) &tmp, sizeof(BTNode));
+            // place node in btree file
+            treeFile.seekg(index, ios::beg);
+            treeFile.write((char *) &tmp, sizeof(BTNode));
+        }
+        else    // split node
+        {
+            cout << "[SPLIT]" << endl;
+            splitNode(key, tmp, index, pindex);
+        }
     }
-    else
+    else    // move to next child node
     {
-        // move on to next potential insert point
-        
+
+        //cout << "water 3" << endl;
+
+        pindex = index;
+        //cout << "water 4" << endl;
+        index = findChildAddr(key, tmp);
+        //cout << "water 5" << endl;
+        goto loop1;
     }
 }
 
@@ -63,8 +89,7 @@ void BTree::reset (char *filename)
 
     // insert root node
     treeFile.write((char *) &root, sizeof(BTNode));
-    rootAddr = treeFile.tellp();
-    root.child[0] = rootAddr;
+    root.child[0] = treeFile.tellp();
 
     // insert 1st node
     BTNode tmp;
@@ -72,8 +97,6 @@ void BTree::reset (char *filename)
     for(int i = 0; i < ORDER; i++)
         tmp.child[i] = -1;
     treeFile.write((char *) &tmp, sizeof(BTNode));
-
-    // record read and write file positions?
 }
 
 void BTree::close ()
@@ -84,7 +107,7 @@ void BTree::close ()
 void BTree::printTree ()
 {
     cout << "----- B-tree of height " << height << "-----" << endl;
-    printTree(rootAddr);
+    printTree(root.child[0]);
 }
 
 void BTree::printTree(int recAddr)
@@ -144,16 +167,18 @@ BTNode BTree::sortNode(BTNode in)
     for(int i = 0; i < ORDER; i++)
         out.child[i] = -1;
  
-    char test[] = "-1";
-    char* pt = test;
+    string test = "-1";
+    char* test_p = &test[0];
     int mi = 0;
     for(int i = 0; i < in.currSize; i++)
     {
         for(int j = 0; j < in.currSize; j++)
         {
-            if(strcmp(in.contents[j].getUPC(), pt) != 0)   // find min value
+            // ignore sorted values
+            if(strcmp(in.contents[j].getUPC().c_str(), test.c_str()) != 0)
             {
-                if(in.contents[j] < in.contents[mi] || strcmp(in.contents[mi].getUPC(), "-1") == 0)
+                // find min value
+                if(in.contents[j] < in.contents[mi] || strcmp(in.contents[mi].getUPC().c_str(), test.c_str()) == 0)
                 {
                     mi = j;
                 }
@@ -161,11 +186,33 @@ BTNode BTree::sortNode(BTNode in)
         }
 
         out.contents[i] = in.contents[mi];
-        //*** This need to be fixed ***
-        keyType tmp = Album(pt, pt, pt);
+        // mark node as sorted
+        keyType tmp = Album(test_p, test_p, test_p);
         in.contents[mi] = tmp;
         mi = 0;
     }
+
+    return out;
+}
+
+int BTree::findChildAddr (keyType key, BTNode t)
+{
+    int index = -1;
+    for(int i = 0; i < t.currSize; i++)
+    {
+        if(key < t.contents[i])
+        {
+            index = i;
+            break;
+        }
+    }
+
+    if(index == -1)
+    {
+        index = t.currSize;
+    }
+
+    return t.child[index];
 }
 
 int BTree::findAddr (keyType key, BTNode t, int tAddr)
@@ -236,9 +283,93 @@ void BTree::adjRoot (keyType rootElem, int oneAddr, int twoAddr)
     //
 }
 
-void BTree::splitNode (keyType& key,int recAddr,int& oneAddr,int& twoAddr)
+//void BTree::splitNode (keyType& key,int recAddr,int& oneAddr,int& twoAddr)
+void BTree::splitNode(keyType key, BTNode t, int index, int pindex)
 {
+    //cout << "fire 0" << endl;
     //
+    // find middle key and sort node
+    keyType mid, tmp1, tmp2;
+    tmp1 = key;
+    for(int i = 0; i < ORDER-1; i++)
+    {
+        if(tmp1 < t.contents[i])   // place key into node
+        {
+            tmp2 = t.contents[i];
+            t.contents[i] = tmp1;
+            tmp1 = tmp2;
+        }
+    }
+    mid = t.contents[ORDER/2];
+    // move keys down
+    for(int i = ORDER/2; i < ORDER-2; i++)
+    {
+        t.contents[i] = t.contents[i+1];
+    }
+    t.contents[ORDER-2] = tmp1;
+
+    //cout << "fire 1" << endl;
+
+    if(pindex != rootAddr)   // check parent is not root
+    {
+        //cout << "fire 2" << endl;
+
+        // place node in btree file
+        treeFile.clear();
+        treeFile.seekp(index, ios::beg);
+        treeFile.write((char *) &t, sizeof(BTNode));
+
+        // try to insert mid into parent node
+        //insert(mid, pindex, index, -1);
+    }
+    else    // parent is root
+    {
+        //cout << "fire 3" << endl;
+
+        // create 2 new child nodes
+        int ch1addr, ch2addr;
+        BTNode child1, child2;
+        child1.currSize = 2;
+        child2.currSize = 2;
+        for(int i = 0; i < ORDER; i++)
+            child1.child[i] = -1;
+        for(int i = 0; i < ORDER; i++)
+            child2.child[i] = -1;
+        for(int i = 0; i < ORDER/2; i++)
+            child1.contents[i] = t.contents[i];
+        for(int i = ORDER/2; i < ORDER-1; i++)
+            child2.contents[i-(ORDER/2)] = t.contents[i];
+        
+        //cout << "fire 4" << endl;
+
+        treeFile.clear();
+        treeFile.seekp(0, ios::end);
+        ch1addr = treeFile.tellp();
+        treeFile.write((char *) &child1, sizeof(BTNode));
+        treeFile.clear();
+        treeFile.seekp(0, ios::end);
+        ch2addr = treeFile.tellp();
+        treeFile.write((char *) &child2, sizeof(BTNode));
+
+        //cout << "fire 5" << endl;
+
+        // place mid in current node / parent of 2 childs
+        BTNode parent;
+        parent.currSize = 1;
+        for(int i = 0; i < ORDER; i++)
+            parent.child[i] = -1;
+        parent.contents[0] = mid;
+        parent.child[0] = ch1addr;
+        parent.child[1] = ch2addr;
+
+        //cout << "child 1 : " << ch1addr << "  child 2 : " << ch2addr << endl;
+
+        treeFile.clear();
+        treeFile.seekp(index, ios::beg);
+        treeFile.write((char *) &parent, sizeof(BTNode));
+
+        //cout << "fire 6" << endl;
+    }
 }
 
 bool BTree::search (string key, BTNode t, int tAddr)

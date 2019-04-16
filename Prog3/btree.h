@@ -62,6 +62,7 @@ class BTree
 	int write;
 
     BTNode sortNode(BTNode in);
+    int findChildAddr (keyType key, BTNode t);
 	int findAddr (keyType key, BTNode t, int tAddr);
 	int findpAddr(keyType key, BTNode t, int tAddr);
 	void insert (keyType key, int recAddr, int oneAddr, int twoAddr);
@@ -72,7 +73,8 @@ class BTree
 	bool isLeaf(BTNode t);
 	int countLeaves(int recAddr);
     void adjRoot (keyType rootElem, int oneAddr, int twoAddr);
-    void splitNode (keyType& key,int recAddr,int& oneAddr,int& twoAddr);
+    //void splitNode (keyType& key,int recAddr,int& oneAddr,int& twoAddr);
+    void splitNode(keyType key, BTNode t, int index, int pindex);
 	bool search (string key, BTNode t, int tAddr);
 };
 
