@@ -1,4 +1,4 @@
-all: create update
+all: create
 
 create: createBT.cpp btree.o album.o
 	c++ -o myCreate createBT.cpp btree.o album.o

@@ -83,7 +83,7 @@ void BTree::reset (char *filename)
 
 void BTree::printTree ()
 {
-    cout << "----- B-tree of height " << height << "-----" << endl;
+    cout << "----- B-tree of height " << getHeight() << "-----" << endl;
     printTree(root.child[0]);
 }
 
@@ -98,16 +98,32 @@ void BTree::printTree(int recAddr)
     }
 }
 
-int BTree::getHeight ()
+int BTree::getHeight()
 {
-    //
-    return 0;
+    return getHeight(root.child[0]);
 }
 
-keyType BTree::retrieve (string key)
+int BTree::getHeight(int index)
 {
-    keyType tmp;
-    return tmp;
+    if(index != -1)
+    {
+        BTNode tmp = getNode(index);
+        int maxpath = 0;
+        int currpath;
+        for(int i = 0; i < tmp.currSize+1; i++)
+        {
+             currpath = 1 + getHeight(tmp.child[i]);
+             if(currpath > maxpath)
+             {
+                maxpath = currpath;
+            }
+        }
+        return maxpath;
+    }
+    else
+    {
+        return -1;
+    }
 }
 
 BTNode BTree::sortNode(BTNode in)
@@ -116,7 +132,7 @@ BTNode BTree::sortNode(BTNode in)
     out.currSize = in.currSize;
     for(int i = 0; i < ORDER; i++)
         out.child[i] = -1;
- 
+
     string test = "-1";
     char* test_p = &test[0];
     int mi = 0;
@@ -231,63 +247,17 @@ void BTree::splitNode(keyType key, BTNode t, int index, int pindex)
     // *** check for norm-split or root-split
     if(pindex != rootAddr)   // check parent is not root
     {
-        // place node in btree file
-        treeFile.clear();
-        treeFile.seekp(index, ios::beg);
-        treeFile.write((char *) &t, sizeof(BTNode));
-
-        // try to insert mid into parent node
-        //insert(mid, pindex, index, -1);
+        leafSplit(t, mid, index, pindex);
     }
     else    // handle parent is root
     {
-        // create 2 new child nodes
-        int ch1addr, ch2addr;
-        BTNode child1, child2;
-        child1.currSize = 2;
-        child2.currSize = 2;
-        for(int i = 0; i < ORDER; i++)
-            child1.child[i] = -1;
-        for(int i = 0; i < ORDER; i++)
-            child2.child[i] = -1;
-        for(int i = 0; i < ORDER/2; i++)
-            child1.contents[i] = t.contents[i];
-        for(int i = ORDER/2; i < ORDER-1; i++)
-            child2.contents[i-(ORDER/2)] = t.contents[i];
-
-        treeFile.clear();
-        treeFile.seekp(0, ios::end);
-        ch1addr = treeFile.tellp();
-        treeFile.write((char *) &child1, sizeof(BTNode));
-        treeFile.clear();
-        treeFile.seekp(0, ios::end);
-        ch2addr = treeFile.tellp();
-        treeFile.write((char *) &child2, sizeof(BTNode));
-
-        // place mid in current node / parent of 2 childs
-        BTNode parent;
-        parent.currSize = 1;
-        for(int i = 0; i < ORDER; i++)
-            parent.child[i] = -1;
-        parent.contents[0] = mid;
-        parent.child[0] = ch1addr;
-        parent.child[1] = ch2addr;
-
-        treeFile.clear();
-        treeFile.seekp(index, ios::beg);
-        treeFile.write((char *) &parent, sizeof(BTNode));
+        rootSplit(t, mid, index);
     }
 }
 
-void BTree::leafSplit(keyType key, BTNode t, int index, int pindex)
+void BTree::leafSplit(BTNode t, keyType mid, int index, int pindex)
 {
-    // if enough space -> place key with child adresses
-    
-    // if secondary split detected -> recursive call back to splitNode
-}
-
-void BTree::rootSplit()
-{
+    // create 2 new child nodes
     int ch1addr, ch2addr;
     BTNode child1, child2;
     child1.currSize = 2;
@@ -301,6 +271,134 @@ void BTree::rootSplit()
     for(int i = ORDER/2; i < ORDER-1; i++)
         child2.contents[i-(ORDER/2)] = t.contents[i];
 
+    // place new child nodes in btree index file
+    treeFile.clear();
+    treeFile.seekp(index, ios::beg);     // replace current node with one child
+    ch1addr = treeFile.tellp();
+    treeFile.write((char *) &child1, sizeof(BTNode));
+    treeFile.clear();
+    treeFile.seekp(0, ios::end);    // place second child at end
+    ch2addr = treeFile.tellp();
+    treeFile.write((char *) &child2, sizeof(BTNode));
+
+    BTNode parent = getNode(pindex);
+    // if enough space in parent -> place key with child adresses
+    if(parent.currSize < 4)
+    {
+        insert(mid, pindex, ch1addr, ch2addr);
+    }
+    else    // if secondary split detected -> recursive call back to splitNode
+    {
+
+    }
 }
 
+void BTree::rootSplit(BTNode t, keyType mid, int index)
+{
+    // create 2 new child nodes
+    int ch1addr, ch2addr;
+    BTNode child1, child2;
+    child1.currSize = 2;
+    child2.currSize = 2;
+    for(int i = 0; i < ORDER; i++)
+        child1.child[i] = -1;
+    for(int i = 0; i < ORDER; i++)
+        child2.child[i] = -1;
+    for(int i = 0; i < ORDER/2; i++)
+        child1.contents[i] = t.contents[i];
+    for(int i = ORDER/2; i < ORDER-1; i++)
+        child2.contents[i-(ORDER/2)] = t.contents[i];
+
+    // place new child nodes in btree index file
+    treeFile.clear();
+    treeFile.seekp(0, ios::end);
+    ch1addr = treeFile.tellp();
+    treeFile.write((char *) &child1, sizeof(BTNode));
+    treeFile.clear();
+    treeFile.seekp(0, ios::end);
+    ch2addr = treeFile.tellp();
+    treeFile.write((char *) &child2, sizeof(BTNode));
+
+    // place mid in current node / parent of 2 childs
+    BTNode parent;
+    parent.currSize = 1;
+    for(int i = 0; i < ORDER; i++)
+        parent.child[i] = -1;
+    parent.contents[0] = mid;
+    parent.child[0] = ch1addr;
+    parent.child[1] = ch2addr;
+
+    // replace split node with parent node in btree index file
+    treeFile.clear();
+    treeFile.seekp(index, ios::beg);
+    treeFile.write((char *) &parent, sizeof(BTNode));
+}
+
+void BTree::insert (keyType key, int index, int ch1addr, int ch2addr)
+{
+    BTNode tmp = getNode(index);
+
+    // insert key into current postion
+    bool bumpf = false;
+    keyType bmpkey1;
+    keyType bmpkey2;
+    int ip;         // insertion point
+    for(int i = 0; i < tmp.currSize; i++)
+    {
+        if(!bumpf)
+        {
+            if(key < tmp.contents[i])
+            {
+                bmpkey1 = tmp.contents[i];
+                tmp.contents[i] = key;
+                ip = i;
+                bumpf = true;
+            }
+        }
+        else
+        {
+            bmpkey2 = bmpkey1;
+            bmpkey1 = tmp.contents[i];
+            tmp.contents[i] = bmpkey2;
+        }
+    }
+    if(bumpf)
+    {
+        tmp.contents[tmp.currSize] = bmpkey1;
+        tmp.currSize++;
+    }
+    else
+    {
+        tmp.contents[tmp.currSize] = key;
+        tmp.currSize++;
+        ip = tmp.currSize-1;
+    }
+
+    // update the child pointers
+    int ctmp1;
+    int ctmp2;
+    bumpf = false;
+    for(int i = 0; i < tmp.currSize+1; i++)
+    {
+        if(!bumpf)
+        {
+            if(i == ip+1)
+            {
+                ctmp1 = tmp.child[i];
+                tmp.child[i] = ch2addr;
+                bumpf = true;
+            }
+        }
+        else
+        {
+            ctmp2 = ctmp1;
+            ctmp1 = tmp.child[i];
+            tmp.child[i] = ctmp2;
+        }
+    }
+
+    // place node in btree file
+    treeFile.seekg(index, ios::beg);
+    treeFile.write((char *) &tmp, sizeof(BTNode));
+}
 #endif
