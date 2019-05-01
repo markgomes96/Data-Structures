@@ -36,18 +36,10 @@ class BTree
 {
  public:
 	BTree();
-	//void writeHeader (char * fileName);
 	void insert (keyType key);
 	void reset (char * filename);
-	//void close ();
 	void printTree();
-	//void inorder();
-	//void reverse();
 	int getHeight();
-	//bool search (string key);
-	//keyType retrieve (string key);
-	//void totalio() const;
-	//int countLeaves();
 
  private:
 	BTNode root;
@@ -56,8 +48,6 @@ class BTree
 	fstream treeFile;
 	int height;
 	void printTree (int rootAddr);
-	//void inorder (int rootAddr);
-	//void reverse (int rootAddr);
 	int read;
 	int write;
 
@@ -66,17 +56,10 @@ class BTree
     int findChildAddr (keyType key, BTNode t);
 	int findAddr (keyType key, BTNode t, int tAddr);
 	int findpAddr(keyType key, BTNode t, int tAddr);
-	//void insert (keyType key, int recAddr, int oneAddr, int twoAddr);
     BTNode getNode (int recAddr);
 	void printNode(int recAddr);
-    //void placeNode (keyType k,int recAddr,int oneAddr,int twoAddr);
-	//bool isLeaf (int recAddr);
 	bool isLeaf(BTNode t);
-	//int countLeaves(int recAddr);
-    //void adjRoot (keyType rootElem, int oneAddr, int twoAddr);
-    //void splitNode (keyType& key,int recAddr,int& oneAddr,int& twoAddr);
     void splitNode(keyType key, BTNode t, int index, int pindex);
-	//bool search (string key, BTNode t, int tAddr);
     void leafSplit(BTNode t, keyType mid, int index, int pindex);
     void rootSplit(BTNode t, keyType mid, int index);
     void insert (keyType key, int index, int ch1addr, int ch2addr);

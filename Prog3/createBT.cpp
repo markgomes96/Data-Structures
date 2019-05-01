@@ -42,12 +42,11 @@ int main(int argc, char *argv[])
         cout << "btree file failed to open" << endl;
         exit(0);
     }
- 
+
     char *bfname_p = &bfname[0];
     bt.reset(bfname_p);
 
     // read in data from sequential file
-    //BTNode buffer;
     string upc, artist, title;
     char *upc_p, *artist_p, *title_p;
     while(!seqfile.eof())
@@ -57,8 +56,6 @@ int main(int argc, char *argv[])
             break;
         getline(seqfile, artist, '\n');
         getline(seqfile, title, '\n');
-
-        //cout << upc << " : " << artist << " : " << title << endl;
 
         // call btree object to insert key
         upc_p = &upc[0];
